@@ -11,12 +11,10 @@ private:
   double   m_radius;
 
 public:
-  Sphere(Vector3d center, double radius):
-         m_center(center), m_radius(radius)
-         {};
+  Sphere(Vector3d center, double radius);
 
-Vector3d getCenter() const;
+  Vector3d getCenter() const;
 
-double getRadius() const;
+  double getRadius() const;
 
 };
