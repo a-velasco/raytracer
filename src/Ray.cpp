@@ -4,15 +4,38 @@
 #include "Ray.h"
 #include "Sphere.h"
 
-bool Ray::intersects( const Sphere &sphere )
+Ray( Vector3d origin, Vector3d dir ): m_origin(origin), m_dir(dir) {};
+
+void Ray::intersects( const Sphere &sphere )
 {
-  std::cout << "  Ray::intersects(sphere)" << std::endl;
   Vector3d displacement = m_origin - sphere.getCenter();
-  Vector3d direction = m_dir;
 
   double a = direction.squaredNorm();
+  double b = 2 * ( m_dir.dot(m_origin - sphere.getCenter()) );
+  double c = (m_origin - sphere.getCenter()).squaredNorm() - sphere.getRadius();
 
-  std::cout << "  a should be 1: " << a << std::endl;
+  double disc = (b*b) - 4*a*c; // discriminant
 
-  return true;
+  if( disc > 0 )
+  {
+    m_hasRoot = true;
+
+    double root1 = -b - sqrt(disc);
+    double root2 = -b + sqrt(disc)
+
+    // use smallest root (should be first time ray hits )
+    if( root1 < root2 || root1 == root2 ) { m_root = root1; }
+    else(){ m_root = root2; }
+  }
+  else if( disc == 0 )
+  {
+    m_hasRoot = true;
+    m_root = -b/(2*a)
+  }
+  else
+  {
+    m_hasRoot = false;
+    m_root = -1.;
+  }
+
 }
