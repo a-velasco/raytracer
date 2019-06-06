@@ -9,12 +9,12 @@ using namespace Eigen;
 class Camera
 {
 private:
-  Vector3d m_origin;
-  float    m_focal;
-  Vector2d m_resolution;
+  Vector3d _origin;
+  float    _fov; // TODO: relate to alpha
+  Vector2d _resolution; // (width, height)
 
 public:
-  Camera( const Vector3d &origin, const float &focal, const Vector2d &resolution );
+  Camera( const Vector3d &origin, const float &fov, const Vector2d &resolution );
 
   struct RayProperties
   {

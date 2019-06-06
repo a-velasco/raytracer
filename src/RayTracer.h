@@ -7,9 +7,9 @@
 class RayTracer
 {
 private:
-  Sphere m_sphere;
-  Camera m_camera;
-  //Light  m_light;
+  Sphere _sphere;
+  Camera _camera;
+  //Light  _light;
 
 public:
   RayTracer( Sphere sphere, Camera camera );

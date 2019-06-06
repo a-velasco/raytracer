@@ -7,27 +7,24 @@
 
 using namespace Eigen;
 
-RayTracer::RayTracer( Sphere sphere, Camera camera ): m_sphere(sphere), m_camera(camera) {};
+RayTracer::RayTracer( Sphere sphere, Camera camera ): _sphere(sphere), _camera(camera) {};
 
 void RayTracer::Update()
-{/*
-  std::cout << "RayTracer::Update()..." << std::endl;
-  Vector3d origin = Vector3d::Zero();
-  Vector3d dir(0.,0.,-1.);
-
-  std::vector<Ray> allRays = m_camera.getAllRays();
+{
+  std::vector<Ray> allRays = _camera.getAllRays();
   for( int i = 0; i < allRays.size(); i++ )
   {
-    if( allRays[i].intersects(m_sphere) )
+    double root = -1.;
+    if( allRays[i].intersects(_sphere, root) )
     {
       std::cout << "Ray " << i << " intersects" << std::endl;
-      // color corresponding pixel
+      // get sphere color
     }
     else
     {
       std::cout << "Ray " << i << " is background" << std::endl;
-      // background color
+      // get background color
     }
   }
-  */
+  
 }

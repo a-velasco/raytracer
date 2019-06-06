@@ -4,15 +4,21 @@
 #include "Ray.h"
 #include "Sphere.h"
 
-Ray::Ray( Vector3d origin, Vector3d dir ): m_origin(origin), m_dir(dir) {};
+Ray::Ray( Vector3d origin, Vector3d dir )
+{
+  _origin = origin;
+
+  // Make sure direction is normalized
+  _dir = dir.normalized();
+}
 
 bool Ray::intersects( const Sphere &sphere, double &root )
 {
-  Vector3d displacement = m_origin - sphere.getCenter();
+  Vector3d displacement = _origin - sphere.getCenter();
 
-  double a = m_dir.squaredNorm();
-  double b = 2 * ( m_dir.dot(m_origin - sphere.getCenter()) );
-  double c = (m_origin - sphere.getCenter()).squaredNorm() - sphere.getRadius();
+  double a = _dir.squaredNorm();
+  double b = 2 * ( _dir.dot(_origin - sphere.getCenter()) );
+  double c = (_origin - sphere.getCenter()).squaredNorm() - sphere.getRadius();
 
   double disc = (b*b) - 4*a*c; // discriminant
 
