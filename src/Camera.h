@@ -2,6 +2,8 @@
 
 #include <Eigen/Dense>
 #include <vector>
+#include <map>
+
 #include "Ray.h"
 
 using namespace Eigen;
@@ -16,12 +18,6 @@ private:
 public:
   Camera( const Vector3d &origin, const float &fov, const Vector2d &resolution );
 
-  struct RayProperties
-  {
-    Ray ray;
-    int pixel_id;
-  };
-
-  std::vector<Ray> getAllRays(); // Function for precomputing all rays
+  std::map< std::vector<int>, Ray > getAllRays(); // Function for precomputing all rays
 
 };
