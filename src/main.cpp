@@ -5,6 +5,7 @@
 
 #include "Sphere.h"
 #include "Ray.h"
+#include "Light.h"
 #include "RayTracer.h"
 
 using namespace Eigen;
@@ -22,8 +23,12 @@ int main()
   float fov = 90;
   Camera camera0( origin, fov, resolution);
 
+  Vector3d lightOrigin(1.0, 1.0, -2.0);
+  Light light0( lightOrigin );
+
   cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(255,255,255));
-  RayTracer rayTracer( sphere0, camera0, image0);
+  
+  RayTracer rayTracer( sphere0, camera0, light0, image0);
   rayTracer.Update();
 
   cv::imshow("Render", rayTracer.getRender());

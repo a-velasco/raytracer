@@ -5,16 +5,15 @@
 #include "Ray.h"
 #include "Sphere.h"
 #include "Camera.h"
+#include "Light.h"
 
 using namespace Eigen;
 
-RayTracer::RayTracer( const Sphere &sphere, const Camera &camera, cv::Mat &image ): 
-                     _sphere(sphere), _camera(camera), _image(image) {};
+RayTracer::RayTracer( const Sphere &sphere, const Camera &camera, const Light &light, cv::Mat &image ): 
+                     _sphere(sphere), _camera(camera), _light(light), _image(image) {};
 
 void RayTracer::Update()
 {
-  Vector3d lightOrigin(0.0, -2.0, -1.0);
-
   std::map<std::vector<int>, Ray> allRays = _camera.getAllRays();
   std::map<std::vector<int>, Ray>::iterator rIt;
 
@@ -31,7 +30,7 @@ void RayTracer::Update()
       Vector3d finalDir = rIt->second.getDirection() - b;
       Ray finalRay( intersectionCoords, finalDir );
 
-      Vector3d intersectionToLight = (intersectionCoords - lightOrigin).normalized();
+      Vector3d intersectionToLight = (intersectionCoords - _light.getOrigin()).normalized();
       double illum = finalRay.getDirection().dot( intersectionToLight );
 
       // set pixel color, TODO: based on material & intensity
@@ -42,11 +41,9 @@ void RayTracer::Update()
       _image.at<cv::Vec3b>(rIt->first[1], rIt->first[0]) = cv::Vec3b(20*illum,10*illum,255*illum);
 
     }
-    else
-    {
-      // TODO: either set background color or initialize image with it already
-    }
   }
+  _image.at<cv::Vec3b>(_light.getOrigin().y(), _light.getOrigin().x()) = cv::Vec3b(0, 255, 0);
+ 
 }
 
 cv::Mat RayTracer::getRender()

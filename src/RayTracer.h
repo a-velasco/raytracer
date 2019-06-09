@@ -11,11 +11,11 @@ class RayTracer
 private:
   Sphere _sphere;
   Camera _camera;
+  Light  _light;
   cv::Mat _image;
-  //Light  _light;
 
 public:
-  RayTracer( const Sphere &sphere, const Camera &camera, cv::Mat &image );
+  RayTracer( const Sphere &sphere, const Camera &camera, const Light &light, cv::Mat &image );
 
   void Update();
 

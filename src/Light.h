@@ -2,18 +2,19 @@
 
 #include <Eigen/Dense>
 
-#include "Ray.h"
+using namespace Eigen;
 
 class Light
 {
 private:
 	Vector3d _origin;
 	// type? enum - isotropic, directional...
-	double _intensity;
 
 public:
-	Light( const Vector3d &origin, const double &intensity );
+	Light( const Vector3d &origin );
 
-	double getIntensityAt( const Ray & ray, std::vector<double> intersectionCoords );
-
+	Vector3d getOrigin()
+	{
+		return _origin;
+	}
 };
