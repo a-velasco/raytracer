@@ -19,14 +19,9 @@ Camera::Camera( const Vector3d &origin, const float &fov, const Vector2d &resolu
 
 std::map< std::vector<int>, Ray > Camera::getAllRays()
 {
-  int numPixels = int(_resolution.x() * _resolution.y());
-  //std::vector<Ray> rays;
-  //rays.reserve(numPixels); // Reserve empty vec of size numPixels
+  //int numPixels = int(_resolution.x() * _resolution.y());
 
-  //std::vector<Vector2i> pixel_ids;
-  //pixel_ids.reserve(numPixels);
-
-  std::map< std::vector<int>, Ray > rays;
+  std::map< std::vector<int>, Ray > rays; // TODO: reserve?
   
   // For each pixel, get its location in world coordinates and compute ray
   // from origin to pixelpoint.

@@ -14,7 +14,7 @@ private:
 public:
   Ray( Vector3d origin, Vector3d dir );
 
-  bool intersects( const Sphere &sphere, double &root );
+  bool intersects( const Sphere &sphere, Vector3d &coords );
 
   Vector3d getOrigin()
   {

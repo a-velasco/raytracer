@@ -16,5 +16,4 @@ public:
   Vector3d getCenter() const;
 
   double getRadius() const;
-
 };

@@ -18,11 +18,11 @@ int main()
   Sphere sphere0( center, radius );
 
   Vector3d origin(0.0, 0.0, 0.0);
-  Vector2d resolution(500,700);
+  Vector2d resolution(200,200);
   float fov = 90;
   Camera camera0( origin, fov, resolution);
 
-  cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(0,0,0));
+  cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(255,255,255));
   RayTracer rayTracer( sphere0, camera0, image0);
   rayTracer.Update();
 
