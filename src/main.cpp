@@ -13,17 +13,17 @@ using namespace Eigen;
 int main()
 {
   // Raycasting Test
-  Vector3d center(0.0, 0.0, -3.0);
-  double radius = 1.0;
+  Vector3d center(0.0, 0.0, -4.0);
+  double radius = 2.0;
   std::cout << "Making sphere with radius " << radius << std::endl;
   Sphere sphere0( center, radius );
 
   Vector3d origin(0.0, 0.0, 0.0);
-  Vector2d resolution(200,200);
+  Vector2d resolution(500,500);
   float fov = 90;
   Camera camera0( origin, fov, resolution);
 
-  Vector3d lightOrigin(1.0, 1.0, -2.0);
+  Vector3d lightOrigin(0.0, 2.0, -2.0);
   Light light0( lightOrigin );
 
   cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(255,255,255));

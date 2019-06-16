@@ -20,4 +20,14 @@ public:
 
   std::map< std::vector<int>, Ray > getAllRays(); // Function for precomputing all rays
 
+  Vector2d getResolution()
+  {
+  	return _resolution;
+  }
+
+  float getFOV()
+  {
+  	return _fov;
+  }
+
 };

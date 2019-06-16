@@ -8,7 +8,7 @@ class Light
 {
 private:
 	Vector3d _origin;
-	// type? enum - isotropic, directional...
+	// type? enum - isotropic, directional, ambient...
 
 public:
 	Light( const Vector3d &origin );

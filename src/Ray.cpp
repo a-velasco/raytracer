@@ -14,7 +14,6 @@ Ray::Ray( Vector3d origin, Vector3d dir )
 
 bool Ray::intersects( const Sphere &sphere, Vector3d &coords )
 {
-  bool doesIntersect = false;
   Vector3d displacement = _origin - sphere.getCenter();
 
   double a = 1.; //_dir.squaredNorm();
@@ -23,35 +22,32 @@ bool Ray::intersects( const Sphere &sphere, Vector3d &coords )
 
   double disc = (b*b) - 4*a*c; // discriminant
 
-  if( disc > 0 )
+  double q, x0, x1;
+  if( disc < 0 ) { return false; }
+  else if ( disc == 0 )
   {
-    doesIntersect = true;
+    x0 = x1 =  -b/(2*a);
+  }
+  else
+  {
+    q = ( b > 0 ) ?
+              -0.5 * (b + sqrt(disc)) :
+              -0.5 * (b - sqrt(disc)); 
+    x0 = q/a;
+    x1 = c/q;
+  }
 
-    double root1 = -b/2. - sqrt(disc);
-    double root2 = -b/2. + sqrt(disc);
-
-    // If both roots positive, then check for which one is smaller
-    if( root1 > 0 && root2 > 0 )
+  if( x0 > x1 ) { std::swap( x0, x1 ); }
+  if( x0 < 0 )
+  { 
+    x0 = x1;
+    if( x0 < 0 )
     {
-      // use smallest root (should be first time ray hits )
-      if( root1 < root2 || root1 == root2 ) { coords = _origin + (root1 * _dir);}
-      else                                  { coords = _origin + (root2 * _dir);}
+      return false;
     }
-
-    // If only one of them is positive, return that one
-    else if( root1 > 0 && root2 < 0) { coords = _origin + (root1 * _dir); }
-    else if( root2 > 0 && root1 < 0) { coords = _origin + (root2 * _dir); }
-
-    // If neither of them is positive, no intersection
-    else { doesIntersect = false; }
-    
-  }
-  else if( disc == 0 )
-  {
-    double root = -b/(2*a);
-    coords = _origin + (root * _dir);
-    doesIntersect = true;
   }
 
-  return doesIntersect;
+  coords = _origin + (x0 * _dir);
+
+  return true;
 }
