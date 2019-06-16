@@ -12,22 +12,26 @@ using namespace Eigen;
 
 int main()
 {
-  // Raycasting Test
+  // Initialize Sphere object
   Vector3d center(0.0, 0.0, -4.0);
   double radius = 2.0;
   std::cout << "Making sphere with radius " << radius << std::endl;
   Sphere sphere0( center, radius );
 
+  // Initialize Camera
   Vector3d origin(0.0, 0.0, 0.0);
-  Vector2d resolution(500,500);
+  Vector2i resolution(500,500);
   float fov = 90;
   Camera camera0( origin, fov, resolution);
 
-  Vector3d lightOrigin(0.0, 2.0, -2.0);
+  // Initialize Light
+  Vector3d lightOrigin(0.0, 2.0, -1.0);
   Light light0( lightOrigin );
 
-  cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(255,255,255));
+  // Initialize Image
+  cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(0,0,0));
   
+  // Compute
   RayTracer rayTracer( sphere0, camera0, light0, image0);
   rayTracer.Update();
 
