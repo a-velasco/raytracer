@@ -24,9 +24,10 @@ void RayTracer::Update()
   for( int i = 0; i < allRays.size(); i++ )
   {
     int x = i%_camera.getResolution().x();
-    int y = (i - x) / (_camera.getResolution().x());
+    int y = (i - x) / _camera.getResolution().x();
+
     std::vector<int> key = {x,y};
-    Ray &currentRay = allRays.at(key);
+    Ray &currentRay = allRays.at( key );
 
     Vector3d intersectionCoords;
     if( currentRay.intersects(_sphere, intersectionCoords) )
@@ -42,13 +43,12 @@ void RayTracer::Update()
       Vector3d intersectionToLight = (_light.getOrigin() - intersectionCoords).normalized();
       
       double diffuse = surfaceNormal.dot(intersectionToLight);
-      //double diffuse = reflectedRay.getDirection().dot( intersectionToLight );
 
-      double specular = 0.; 
+      double specular = 0.;
 
       double ambient = 0.5;
 
-      double illum_total = (1. * ambient) + (0.5 * diffuse) + (0.5 * specular);
+      double illum_total = (0.5 * ambient) + (0.6 * diffuse) + (0.2 * specular);
 
       _image.at<cv::Vec3b>(y, x) = cv::Vec3b(209*illum_total,133*illum_total,152*illum_total);
     }
@@ -58,7 +58,6 @@ void RayTracer::Update()
   double end_omp = omp_get_wtime();
   std::cout << " STD clock: " << (end-start)/CLOCKS_PER_SEC << " s" <<  std::endl;
   std::cout << " OMP clock: " << (end_omp-start_omp) << " s" <<  std::endl;
-
 }
 
 cv::Mat RayTracer::getRender()

@@ -20,12 +20,12 @@ int main()
 
   // Initialize Camera
   Vector3d origin(0.0, 0.0, 0.0);
-  Vector2i resolution(1000,1000);
+  Vector2i resolution(500,500);
   float fov = 90;
   Camera camera0( origin, fov, resolution);
 
   // Initialize Light
-  Vector3d lightOrigin(0.0, 3.0, 0.5);
+  Vector3d lightOrigin(0.0, 2.0, 0.5);
   Light light0( lightOrigin );
 
   // Initialize Image
