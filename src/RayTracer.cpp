@@ -16,12 +16,18 @@ RayTracer::RayTracer( const Sphere &sphere, const Camera &camera, const Light &l
 void RayTracer::Update()
 {
   std::map<std::vector<int>, Ray> allRays = _camera.getAllRays();
-  std::map<std::vector<int>, Ray>::iterator rIt;
 
-  int count = 0;
-  for( rIt = allRays.begin(); rIt != allRays.end(); rIt++ )
+  double start = clock();
+  double start_omp = omp_get_wtime();
+
+  #pragma omp parallel for
+  for( int i = 0; i < allRays.size(); i++ )
   {
-    Ray &currentRay = rIt->second; 
+    int x = i%_camera.getResolution().x();
+    int y = (i - x) / (_camera.getResolution().x());
+    std::vector<int> key = {x,y};
+    Ray &currentRay = allRays.at(key);
+
     Vector3d intersectionCoords;
     if( currentRay.intersects(_sphere, intersectionCoords) )
     {
@@ -44,9 +50,15 @@ void RayTracer::Update()
 
       double illum_total = (1. * ambient) + (0.5 * diffuse) + (0.5 * specular);
 
-      _image.at<cv::Vec3b>(rIt->first[1], rIt->first[0]) = cv::Vec3b(209*illum_total,133*illum_total,152*illum_total);
+      _image.at<cv::Vec3b>(y, x) = cv::Vec3b(209*illum_total,133*illum_total,152*illum_total);
     }
   }
+
+  double end = clock();
+  double end_omp = omp_get_wtime();
+  std::cout << " STD clock: " << (end-start)/CLOCKS_PER_SEC << " s" <<  std::endl;
+  std::cout << " OMP clock: " << (end_omp-start_omp) << " s" <<  std::endl;
+
 }
 
 cv::Mat RayTracer::getRender()
