@@ -10,8 +10,8 @@
 
 using namespace Eigen;
 
-RayTracer::RayTracer( const Sphere &sphere, const Camera &camera, const Light &light, cv::Mat &image ): 
-                     _sphere(sphere), _camera(camera), _light(light), _image(image) {};
+RayTracer::RayTracer( const std::vector< Sphere > &spheres, const Camera &camera, const Light &light, cv::Mat &image ): 
+                     _spheres(spheres), _camera(camera), _light(light), _image(image) {};
 
 void RayTracer::Update()
 {
@@ -23,34 +23,38 @@ void RayTracer::Update()
   #pragma omp parallel for
   for( int i = 0; i < allRays.size(); i++ )
   {
-    int x = i%_camera.getResolution().x();
-    int y = (i - x) / _camera.getResolution().x();
-
-    std::vector<int> key = {x,y};
-    Ray &currentRay = allRays.at( key );
-
-    Vector3d intersectionCoords;
-    if( currentRay.intersects(_sphere, intersectionCoords) )
+    for( int s = 0; s < _spheres.size(); s++ )
     {
-      Vector3d surfaceNormal = (intersectionCoords - _sphere.getCenter()).normalized();
+      Sphere currentSphere = _spheres[s]; 
 
-      double   a = 2.0 * currentRay.getDirection().dot(surfaceNormal);
-      Vector3d b = a * surfaceNormal;
-      Vector3d finalDir = currentRay.getDirection() - b;
-      
-      Ray reflectedRay( intersectionCoords, finalDir );
+      int x = i%_camera.getResolution().x();
+      int y = (i - x) / _camera.getResolution().x();
 
-      Vector3d intersectionToLight = (_light.getOrigin() - intersectionCoords).normalized();
-      
-      double diffuse = surfaceNormal.dot(intersectionToLight);
+      std::vector<int> key = {x,y};
+      Ray &currentRay = allRays.at( key );
 
-      double specular = 0.;
+      Vector3d intersectionCoords;
+      if( currentRay.intersects(currentSphere, intersectionCoords) )
+      {
+        Vector3d surfaceNormal = (intersectionCoords - currentSphere.getCenter()).normalized();
 
-      double ambient = 0.5;
+        double   a = 2.0 * currentRay.getDirection().dot(surfaceNormal);
+        Vector3d b = a * surfaceNormal;
+        Vector3d finalDir = currentRay.getDirection() - b;
+        
+        Ray reflectedRay( intersectionCoords, finalDir );
 
-      double illum_total = (0.5 * ambient) + (0.6 * diffuse) + (0.2 * specular);
+        Vector3d intersectionToLight = (_light.getOrigin() - intersectionCoords).normalized();
+        
+        double diffuse = surfaceNormal.dot(intersectionToLight);
+        double specular = 0.;
+        double ambient = 0.5;
 
-      _image.at<cv::Vec3b>(y, x) = cv::Vec3b(209*illum_total,133*illum_total,152*illum_total);
+        double illum_total = (0.5 * ambient) + (0.6 * diffuse) + (0.2 * specular);
+
+        _image.at<cv::Vec3b>(y, x) = illum_total * currentSphere.getColor();
+        //cv::Vec3b(209*illum_total,133*illum_total,152*illum_total);
+      }
     }
   }
 

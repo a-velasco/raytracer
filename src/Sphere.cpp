@@ -2,7 +2,8 @@
 
 using namespace Eigen;
 
-Sphere::Sphere(Vector3d center, double radius): _center(center), _radius(radius) {};
+Sphere::Sphere(const Vector3d &center, const double &radius, cv::Vec3b &color )
+	           : _center(center), _radius(radius), _color(color) {};
 
 Vector3d Sphere::getCenter() const
 {
@@ -12,5 +13,10 @@ Vector3d Sphere::getCenter() const
 double Sphere::getRadius() const
 {
   return _radius;
+}
+
+cv::Vec3b Sphere::getColor()
+{
+	return _color;
 }
 

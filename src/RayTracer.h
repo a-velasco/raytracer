@@ -9,13 +9,13 @@
 class RayTracer
 {
 private:
-  Sphere _sphere;
+  std::vector< Sphere > _spheres;
   Camera _camera;
   Light  _light;
   cv::Mat _image;
 
 public:
-  RayTracer( const Sphere &sphere, const Camera &camera, const Light &light, cv::Mat &image );
+  RayTracer( const std::vector< Sphere > &spheres, const Camera &camera, const Light &light, cv::Mat &image );
 
   void Update();
 
