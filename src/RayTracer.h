@@ -5,17 +5,21 @@
 #include "Sphere.h"
 #include "Light.h"
 #include "Camera.h"
+#include "Mesh.h"
 
 class RayTracer
 {
 private:
   std::vector< Sphere > _spheres;
+  std::vector< Mesh > _meshes;
   Camera _camera;
   Light  _light;
   cv::Mat _image;
 
 public:
   RayTracer( const std::vector< Sphere > &spheres, const Camera &camera, const Light &light, cv::Mat &image );
+
+  RayTracer( const std::vector< Mesh > &meshes, const Camera &camera, const Light &light, cv::Mat &image );
 
   void Update();
 

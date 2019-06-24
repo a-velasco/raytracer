@@ -7,11 +7,15 @@
 #include "Sphere.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Mesh.h"
 
 using namespace Eigen;
 
 RayTracer::RayTracer( const std::vector< Sphere > &spheres, const Camera &camera, const Light &light, cv::Mat &image ): 
                      _spheres(spheres), _camera(camera), _light(light), _image(image) {};
+
+RayTracer::RayTracer( const std::vector< Mesh > &meshes, const Camera &camera, const Light &light, cv::Mat &image ): 
+                     _meshes(meshes), _camera(camera), _light(light), _image(image) {};
 
 void RayTracer::Update()
 {
@@ -46,14 +50,13 @@ void RayTracer::Update()
 
         Vector3d intersectionToLight = (_light.getOrigin() - intersectionCoords).normalized();
         
-        double diffuse = surfaceNormal.dot(intersectionToLight);
+        double ambient  = 0.5;
+        double diffuse  = surfaceNormal.dot(intersectionToLight);
         double specular = 0.;
-        double ambient = 0.5;
 
         double illum_total = (0.5 * ambient) + (0.6 * diffuse) + (0.2 * specular);
 
         _image.at<cv::Vec3b>(y, x) = illum_total * currentSphere.getColor();
-        //cv::Vec3b(209*illum_total,133*illum_total,152*illum_total);
       }
     }
   }

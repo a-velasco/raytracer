@@ -51,3 +51,8 @@ bool Ray::intersects( const Sphere &sphere, Vector3d &coords )
 
   return true;
 }
+
+bool Ray::intersects( const Vector3d &triangle, Vector3d &coords )
+{
+
+}

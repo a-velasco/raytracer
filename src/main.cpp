@@ -12,13 +12,23 @@ using namespace Eigen;
 
 int main(int argc, char *argv[])
 {
+  typedef Vector3d PointType;
+  typedef Vector2d EdgeType;
+  typedef Vector3i TriangleType;
+
+  typedef std::vector< PointType >    PointTypeVector;
+  typedef std::vector< EdgeType >     EdgeTypeVector;
+  typedef std::vector< TriangleType > TriangleTypeVector;
+
+  typedef cv::Vec3b BGRColorType;
+
   // Initialize Sphere objects
-  Vector3d center0(2.5, 0.0, -5.0); // issue! x = 2.5 and res non square e.g.(500,700)
-  Vector3d center1(-2.5, 0.0, -5.0);
+  PointType center0(2.5, 0.0, -5.0); // issue? x = 2.5 and res non square e.g.(500,700)
+  PointType center1(-2.5, 0.0, -5.0);
 
   double radius0 = 1.0;
-  cv::Vec3b color0(189,217,239);
-  cv::Vec3b color1(245,180,200);
+  BGRColorType color0(189,217,239);
+  BGRColorType color1(245,180,200);
 
   Sphere sphere0( center0, radius0, color0 );
   Sphere sphere1( center1, radius0, color1 );
@@ -26,7 +36,7 @@ int main(int argc, char *argv[])
   std::vector< Sphere > spheres = {sphere0, sphere1};
 
   // Initialize Camera
-  Vector3d origin(0.0, 0.0, 0.0);
+  PointType origin(0.0, 0.0, 0.0);
   Vector2i resolution(500,500);
   float fov = 90;
   Camera camera( origin, fov, resolution);
@@ -36,15 +46,46 @@ int main(int argc, char *argv[])
 
   // Initialize Image
   cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(0,0,0));
+
+  // Load mesh
+  PointTypeVector    points;
+  EdgeTypeVector     edges;
+  TriangleTypeVector triangles;
+
+  Mesh mesh( points, edges, triangles );
+  mesh.import("/home/andrea/Documents/Development/raytracer/mesh_files/simple.msh");
+
+  // Check import
+  points = mesh.getPoints();
+  edges = mesh.getEdges();
+  triangles = mesh.getTriangles();
+
+  int tId = 0;
+  int p1Id = triangles[tId].x();
+  int p2Id = triangles[tId].y();
+  int p3Id = triangles[tId].z();
+
+  std::cout << "Triangle " << tId << " contains the points with IDs" << std::endl;
+
+  std::cout << p1Id << " " << p2Id << " " << p3Id << std::endl;
   
+  std::cout << "...which correspond to points: " << std::endl;
+  std::cout << "ID " << p1Id << std::endl;
+  std::cout << points[p1Id].x() << " " << points[p1Id].y() << " " << points[p1Id].z() << std::endl;
+
+  std::cout << "ID " << p2Id << std::endl;
+  std::cout << points[p2Id].x() << " " << points[p2Id].y() << " " << points[p2Id].z() << std::endl;
+
+  std::cout << "ID " << p3Id << std::endl;
+  std::cout << points[p3Id].x() << " " << points[p3Id].y() << " " << points[p3Id].z() << std::endl;
+
   // Compute
-  RayTracer rayTracer( spheres, camera, light0, image0);
+  /*RayTracer rayTracer( spheres, camera, light0, image0);
   rayTracer.Update();
 
   cv::imshow("Render", rayTracer.getRender());
 
-  cv::waitKey(0);
-/*
-*/
+  cv::waitKey(0);*/
+
   return 0;
 }

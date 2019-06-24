@@ -16,6 +16,8 @@ public:
 
   bool intersects( const Sphere &sphere, Vector3d &coords );
 
+  bool intersects( const Vector3d &triangle, Vector3d &coords );
+
   Vector3d getOrigin()
   {
   	return _origin;
