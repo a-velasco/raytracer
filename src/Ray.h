@@ -1,30 +1,25 @@
 #pragma once
 
 #include <Eigen/Dense>
-#include "Sphere.h"
+
+#include <vector>
 
 using namespace Eigen;
 
 class Ray
 {
+
+  typedef Vector3d                  PointType;
+  typedef std::vector< PointType >  PointTypeVector;
+
 private:
-  Vector3d _origin;
-  Vector3d _dir;
+  PointType _origin;
+  PointType _dir;
 
 public:
-  Ray( Vector3d origin, Vector3d dir );
+  Ray( PointType origin, PointType dir );
 
-  bool intersects( const Sphere &sphere, Vector3d &coords );
+  PointType getOrigin() const;
 
-  bool intersects( const Vector3d &triangle, Vector3d &coords );
-
-  Vector3d getOrigin()
-  {
-  	return _origin;
-  }
-
-  Vector3d getDirection()
-  {
-  	return _dir;
-  }
+  PointType getDirection() const;
 };

@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
   Vector2i resolution(500,500);
   float fov = 90;
   Camera camera( origin, fov, resolution);
+  
   // Initialize Light
   Vector3d lightOrigin(0.0, 2.0, 0.5);
   Light light0( lightOrigin );
@@ -80,12 +81,12 @@ int main(int argc, char *argv[])
   std::cout << points[p3Id].x() << " " << points[p3Id].y() << " " << points[p3Id].z() << std::endl;
 
   // Compute
-  /*RayTracer rayTracer( spheres, camera, light0, image0);
+  RayTracer rayTracer( spheres, camera, light0, image0);
   rayTracer.Update();
 
   cv::imshow("Render", rayTracer.getRender());
 
-  cv::waitKey(0);*/
+  cv::waitKey(0);
 
   return 0;
 }

@@ -38,7 +38,7 @@ void RayTracer::Update()
       Ray &currentRay = allRays.at( key );
 
       Vector3d intersectionCoords;
-      if( currentRay.intersects(currentSphere, intersectionCoords) )
+      if( currentSphere.intersects(currentRay, intersectionCoords) )
       {
         Vector3d surfaceNormal = (intersectionCoords - currentSphere.getCenter()).normalized();
 

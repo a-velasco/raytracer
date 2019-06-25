@@ -3,7 +3,6 @@
 #include <math.h>
 #include <map>
 
-#include <Eigen/Dense>
 #include "Ray.h"
 #include "Camera.h"
 
