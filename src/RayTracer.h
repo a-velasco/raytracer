@@ -21,9 +21,7 @@ private:
 
 public:
   RayTracer( const std::vector< Sphere > &spheres, const Camera &camera, const Light &light, cv::Mat &image );
-
-  RayTracer( const std::vector< Mesh > &meshes, const Camera &camera, const Light &light, cv::Mat &image );
-
+  
   void Update();
 
   cv::Mat getRender();

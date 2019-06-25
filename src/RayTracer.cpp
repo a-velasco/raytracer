@@ -14,9 +14,6 @@ using namespace Eigen;
 RayTracer::RayTracer( const std::vector< Sphere > &spheres, const Camera &camera, const Light &light, cv::Mat &image ): 
                      _spheres(spheres), _camera(camera), _light(light), _image(image) {};
 
-RayTracer::RayTracer( const std::vector< Mesh > &meshes, const Camera &camera, const Light &light, cv::Mat &image ): 
-                     _meshes(meshes), _camera(camera), _light(light), _image(image) {};
-
 void RayTracer::Update()
 {
   std::map<std::vector<int>, Ray> allRays = _camera.getAllRays();
