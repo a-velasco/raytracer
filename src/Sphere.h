@@ -15,18 +15,18 @@ class Sphere
   typedef cv::Vec3b BGRColorType;
 
 private:
-  PointType  _center;
-  double     _radius;
-  cv::Vec3b  _color;
+  PointType     _center;
+  double        _radius;
+  BGRColorType  _color;
 
 public:
   Sphere(const PointType &center, const double &radius, BGRColorType &color );
 
   bool intersects( const Ray &ray, PointType &coords );
 
-  Vector3d getCenter() const;
+  PointType getCenter() const;
 
   double getRadius() const;
 
-  cv::Vec3b getColor();
+  BGRColorType getColor();
 };

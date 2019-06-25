@@ -10,13 +10,15 @@ using namespace Eigen;
 
 class Camera
 {
+  typedef Vector3d PointType;
+  
 private:
-  Vector3d _origin;
-  float    _fov; // TODO: relate to alpha
+  PointType _origin;
+  float    _fov;
   Vector2i _resolution; // (width, height)
 
 public:
-  Camera( const Vector3d &origin, const float &fov, const Vector2i &resolution );
+  Camera( const PointType &origin, const float &fov, const Vector2i &resolution );
 
   std::map< std::vector<int>, Ray > getAllRays(); // Function for precomputing all rays
 

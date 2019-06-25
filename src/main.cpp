@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
   typedef cv::Vec3b BGRColorType;
 
   // Initialize Sphere objects
-  PointType center0(2.5, 0.0, -5.0); // issue? x = 2.5 and res non square e.g.(500,700)
-  PointType center1(-2.5, 0.0, -5.0);
+  PointType center0(0, 0.0, -3.0);
+  PointType center1(1, 0.0, -5.0);
 
   double radius0 = 1.0;
   BGRColorType color0(189,217,239);

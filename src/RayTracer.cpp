@@ -16,6 +16,9 @@ RayTracer::RayTracer( const std::vector< Sphere > &spheres, const Camera &camera
 
 void RayTracer::Update()
 {
+  cv::Mat depthBuffer;
+  depthBuffer = cv::Mat::zeros(_camera.getResolution().x(), _camera.getResolution().y(), CV_64F) - 1e8;
+
   std::map<std::vector<int>, Ray> allRays = _camera.getAllRays();
 
   double start = clock();
@@ -37,23 +40,29 @@ void RayTracer::Update()
       Vector3d intersectionCoords;
       if( currentSphere.intersects(currentRay, intersectionCoords) )
       {
-        Vector3d surfaceNormal = (intersectionCoords - currentSphere.getCenter()).normalized();
+        // If this intersection point on this sphere is closest to camera so far, paint and update z buffer.
+        if( intersectionCoords.z() > depthBuffer.at<double>(y, x) )
+        {
+          Vector3d surfaceNormal = (intersectionCoords - currentSphere.getCenter()).normalized();
 
-        double   a = 2.0 * currentRay.getDirection().dot(surfaceNormal);
-        Vector3d b = a * surfaceNormal;
-        Vector3d finalDir = currentRay.getDirection() - b;
-        
-        Ray reflectedRay( intersectionCoords, finalDir );
+          double   a = 2.0 * currentRay.getDirection().dot(surfaceNormal);
+          Vector3d b = a * surfaceNormal;
+          Vector3d finalDir = currentRay.getDirection() - b;
+          
+          Ray reflectedRay( intersectionCoords, finalDir );
 
-        Vector3d intersectionToLight = (_light.getOrigin() - intersectionCoords).normalized();
-        
-        double ambient  = 0.5;
-        double diffuse  = surfaceNormal.dot(intersectionToLight);
-        double specular = 0.;
+          Vector3d intersectionToLight = (_light.getOrigin() - intersectionCoords).normalized();
+          
+          double ambient  = 0.5;
+          double diffuse  = surfaceNormal.dot(intersectionToLight);
+          double specular = 0.;
 
-        double illum_total = (0.5 * ambient) + (0.6 * diffuse) + (0.2 * specular);
+          double illum_total = (0.5 * ambient) + (0.6 * diffuse) + (0.2 * specular);
 
-        _image.at<cv::Vec3b>(y, x) = illum_total * currentSphere.getColor();
+          _image.at<cv::Vec3b>(y, x) = illum_total * currentSphere.getColor();
+
+          depthBuffer.at<double>(y, x) = intersectionCoords.z(); // update buffer with new closest z
+        }
       }
     }
   }

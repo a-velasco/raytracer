@@ -10,7 +10,7 @@ using namespace Eigen;
 
 // Coordinate system: OpenGL
 
-Camera::Camera( const Vector3d &origin, const float &fov, const Vector2i &resolution ):
+Camera::Camera( const PointType &origin, const float &fov, const Vector2i &resolution ):
         _origin(origin), _fov(fov), _resolution(resolution) {};
 
 // Given a viewport size (image resolution), origin, and focal point, compute
@@ -29,9 +29,17 @@ std::map< std::vector<int>, Ray > Camera::getAllRays()
   {
     for( int y = 0; y < _resolution.y(); y++ )
     { 
-      // Raster --> Screen --> Camera Coordinate
-      double pixCameraX = (2 * ((x + 0.5) / _resolution.x()) - 1) * aspectRatio * scale;
-      double pixCameraY = (1 - 2 * (y + 0.5) / _resolution.y()) * scale; 
+      // Raster
+      double pixNDCX = (x + 0.5) / _resolution.x();
+      double pixNDCY = (y + 0.5) / _resolution.y();
+
+      // Raster --> Screen
+      double pixScreenX = 2 * pixNDCX - 1;
+      double pixScreenY = 1 - 2 * pixNDCY;
+
+      // Screen --> Camera
+      double pixCameraX = (2 * pixScreenX - 1) * aspectRatio * scale;
+      double pixCameraY = (1 - 2 * pixScreenY) * scale;
 
       // Compute ray from origin to current pixel
       Vector3d rayDirection( pixCameraX, pixCameraY, -1. ); // - rayOrigin?
