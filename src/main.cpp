@@ -7,6 +7,7 @@
 #include "Ray.h"
 #include "Light.h"
 #include "RayTracer.h"
+#include "Mesh.h"
 
 using namespace Eigen;
 
@@ -48,41 +49,21 @@ int main(int argc, char *argv[])
   // Initialize Image
   cv::Mat image0(resolution.x(), resolution.y(), CV_8UC3, cv::Scalar(0,0,0));
 
+  // Render Spheres
+  // RayTracer rayTracer( spheres, camera, light0, image0);
+  // rayTracer.UpdateSpheres();
+
   // Load mesh
   PointTypeVector    points;
   EdgeTypeVector     edges;
   TriangleTypeVector triangles;
 
-  Mesh mesh( points, edges, triangles );
-  mesh.import("/home/andrea/Documents/Development/raytracer/mesh_files/simple.msh");
+  Mesh mesh0( points, edges, triangles );
+  mesh0.import("/home/andrea/Documents/Development/raytracer/mesh_files/basic.msh");
 
-  // Check import
-  points = mesh.getPoints();
-  edges = mesh.getEdges();
-  triangles = mesh.getTriangles();
-
-  int tId = 0;
-  int p1Id = triangles[tId].x();
-  int p2Id = triangles[tId].y();
-  int p3Id = triangles[tId].z();
-
-  std::cout << "Triangle " << tId << " contains the points with IDs" << std::endl;
-
-  std::cout << p1Id << " " << p2Id << " " << p3Id << std::endl;
-  
-  std::cout << "...which correspond to points: " << std::endl;
-  std::cout << "ID " << p1Id << std::endl;
-  std::cout << points[p1Id].x() << " " << points[p1Id].y() << " " << points[p1Id].z() << std::endl;
-
-  std::cout << "ID " << p2Id << std::endl;
-  std::cout << points[p2Id].x() << " " << points[p2Id].y() << " " << points[p2Id].z() << std::endl;
-
-  std::cout << "ID " << p3Id << std::endl;
-  std::cout << points[p3Id].x() << " " << points[p3Id].y() << " " << points[p3Id].z() << std::endl;
-
-  // Compute
-  RayTracer rayTracer( spheres, camera, light0, image0);
-  rayTracer.Update();
+  std::vector< Mesh > meshes = { mesh0 };
+  RayTracer rayTracer( meshes, camera, light0, image0);
+  rayTracer.UpdateMeshes();
 
   cv::imshow("Render", rayTracer.getRender());
 

@@ -63,6 +63,55 @@ void Mesh::import( const std::string filename )
     }
 }
 
+bool Mesh::triangleIntersectsRay( const TriangleType &triangle, const Ray &ray, PointType &coords, PointType &surfaceNormal )
+{
+    // 1. Compute the normal of the triangle's plane
+    // Vertex IDs
+    int v0Id = triangle(0);
+    int v1Id = triangle(1);
+    int v2Id = triangle(2);
+
+    // Vertex coordinates
+    PointType v0 = _points[v0Id];
+    PointType v1 = _points[v1Id];
+    PointType v2 = _points[v2Id];
+
+    PointType edge0 = v1 - v0;
+    PointType edge1 = v2 - v1;
+    PointType edge2 = v0 - v2;
+    PointType N = edge0.cross(edge1); // normal
+    surfaceNormal = N.normalized();
+
+    // 2. Check if ray and plane are parallel
+    double NdotRayDir = N.dot(ray.getDirection());
+    if( fabs(NdotRayDir) < 1e-8 ) // almost 0
+    {
+        return false; // parallel, therefore they don't intersect
+    }
+
+    double d = N.dot(v0);
+    double t = ( N.dot(ray.getOrigin()) + d ) / NdotRayDir;
+
+    // 3. Check if triangle is behind ray
+    if( t < 0 ){ return false; }
+
+    // 4. Intersection point
+    PointType P = ray.getOrigin() + t * ray.getDirection();
+
+    // 5. Check if outside any of the edges
+    std::vector<PointType> edges = {edge0, edge1, edge2};
+    PointType C;
+    for( int i = 0; i < 3; i++ )
+    {
+        PointType vp = P - edges[i];
+        C = edges[i].cross(vp); // Vec perpendicular to plane
+        if( N.dot(C) < 0 ) { return false; }
+    }
+
+    coords = ray.getOrigin() + (t * ray.getDirection());
+    return true;
+}
+
 Mesh::PointTypeVector    Mesh::getPoints()    { return _points;    }
 Mesh::EdgeTypeVector     Mesh::getEdges()     { return _edges;     }
 Mesh::TriangleTypeVector Mesh::getTriangles() { return _triangles; }

@@ -3,6 +3,8 @@
 #include <Eigen/Dense>
 #include <vector>
 
+#include "Ray.h"
+
 using namespace Eigen;
 
 // Mesh class to store triangles, points, and edges.
@@ -25,15 +27,18 @@ private:
     TriangleTypeVector _triangles;
 
 public:
-
 	Mesh( PointTypeVector    &points,
           EdgeTypeVector     &edges,
           TriangleTypeVector &triangles );
 
 	void import( const std::string filename );
 
+	bool triangleIntersectsRay( const TriangleType &triangle, const Ray &ray, PointType &coords, PointType &surfaceNormal );
+
 	PointTypeVector    getPoints();
 	EdgeTypeVector     getEdges();
 	TriangleTypeVector getTriangles();
+
+
 
 };
