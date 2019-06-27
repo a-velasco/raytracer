@@ -14,7 +14,6 @@ class RayTracer
 {
 private:
   std::vector< Sphere > _spheres;
-  std::vector< Mesh >   _meshes;
   Camera 				_camera;
   Light  				_light;
   cv::Mat 				_image;

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 
@@ -20,6 +22,9 @@ void RayTracer::Update()
   depthBuffer = cv::Mat::zeros(_camera.getResolution().x(), _camera.getResolution().y(), CV_64F) - 1e8;
 
   std::map<std::vector<int>, Ray> allRays = _camera.getAllRays();
+
+  //std::ofstream fs;
+  //fs.open("../logs/times_omp.txt", std::ios::app);
 
   double start = clock();
   double start_omp = omp_get_wtime();
@@ -57,7 +62,7 @@ void RayTracer::Update()
           double diffuse  = surfaceNormal.dot(intersectionToLight);
           double specular = 0.;
 
-          double illum_total = (0.5 * ambient) + (0.6 * diffuse) + (0.2 * specular);
+          double illum_total = (0.5 * ambient) + (0.7 * diffuse) + (0.2 * specular);
 
           _image.at<cv::Vec3b>(y, x) = illum_total * currentSphere.getColor();
 
@@ -69,8 +74,8 @@ void RayTracer::Update()
 
   double end = clock();
   double end_omp = omp_get_wtime();
-  std::cout << " STD clock: " << (end-start)/CLOCKS_PER_SEC << " s" <<  std::endl;
-  std::cout << " OMP clock: " << (end_omp-start_omp) << " s" <<  std::endl;
+  //fs << _camera.getResolution().x() << " " << (end-start)/CLOCKS_PER_SEC << "\n";
+  //fs << _camera.getResolution().x() << " " << (end_omp-start_omp) << "\n";
 }
 
 cv::Mat RayTracer::getRender()

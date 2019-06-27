@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Eigen/Dense>
-
 #include <vector>
+
+#include <Eigen/Dense>
 
 using namespace Eigen;
 
@@ -20,6 +20,5 @@ public:
   Ray( PointType origin, PointType dir );
 
   PointType getOrigin() const;
-
   PointType getDirection() const;
 };

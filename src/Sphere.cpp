@@ -20,7 +20,7 @@ bool Sphere::intersects( const Ray &ray, PointType &coords )
   if( disc < 0 ) { return false; }
   else if ( disc == 0 )
   {
-    x0 = x1 =  -b/(2*a);
+    x0 = x1 = -b/(2*a);
   }
   else
   {
@@ -56,7 +56,7 @@ double Sphere::getRadius() const
   return _radius;
 }
 
-cv::Vec3b Sphere::getColor()
+cv::Vec3b Sphere::getColor() const
 {
 	return _color;
 }

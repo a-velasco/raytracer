@@ -11,25 +11,19 @@ using namespace Eigen;
 class Camera
 {
   typedef Vector3d PointType;
+  typedef Vector2i ResolutionType;
   
 private:
-  PointType _origin;
-  float    _fov;
-  Vector2i _resolution; // (width, height)
+  PointType      _origin;
+  ResolutionType _resolution;
+  double          _fov;
 
 public:
-  Camera( const PointType &origin, const float &fov, const Vector2i &resolution );
+  Camera( const PointType &origin, const double &fov, const ResolutionType &resolution );
 
-  std::map< std::vector<int>, Ray > getAllRays(); // Function for precomputing all rays
+  std::map< std::vector<int>, Ray > getAllRays();
 
-  Vector2i getResolution()
-  {
-  	return _resolution;
-  }
-
-  float getFOV()
-  {
-  	return _fov;
-  }
+  ResolutionType getResolution() const;
+  double 		 getFOV() const;
 
 };

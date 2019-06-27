@@ -24,9 +24,7 @@ public:
 
   bool intersects( const Ray &ray, PointType &coords );
 
-  PointType getCenter() const;
-
-  double getRadius() const;
-
-  BGRColorType getColor();
+  PointType    getCenter() const;
+  double       getRadius() const;
+  BGRColorType getColor() const;
 };

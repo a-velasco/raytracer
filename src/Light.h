@@ -6,15 +6,14 @@ using namespace Eigen;
 
 class Light
 {
+	typedef Vector3d PointType;
 private:
-	Vector3d _origin;
+	PointType _origin;
 	// type? enum - isotropic, directional, ambient...
 
 public:
-	Light( const Vector3d &origin );
+	Light( const PointType &origin );
 
-	Vector3d getOrigin()
-	{
-		return _origin;
-	}
+	PointType getOrigin() const;
+
 };
