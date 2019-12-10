@@ -1,22 +1,30 @@
 #pragma once
 
 #include <Eigen/Dense>
+#include <opencv2/core/core.hpp>
+
+#include "Ray.h"
 
 using namespace Eigen;
 
 class Sphere
 {
+  typedef Vector3d                  PointType;
+  typedef std::vector< PointType >  PointTypeVector;
+
+  typedef cv::Vec3b BGRColorType;
+
 private:
-  Vector3d m_center;
-  double   m_radius;
+  PointType     _center;
+  double        _radius;
+  BGRColorType  _color;
 
 public:
-  Sphere(Vector3d center, double radius):
-         m_center(center), m_radius(radius)
-         {};
+  Sphere(const PointType &center, const double &radius, BGRColorType &color );
 
-Vector3d getCenter() const;
+  bool intersects( const Ray &ray, PointType &coords );
 
-double getRadius() const;
-
+  PointType    getCenter() const;
+  double       getRadius() const;
+  BGRColorType getColor() const;
 };

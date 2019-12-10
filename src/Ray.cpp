@@ -1,15 +1,21 @@
 #include <iostream>
 
-#include <Eigen/Dense>
 #include "Ray.h"
-#include "Sphere.h"
 
-bool Ray::intersects( const Sphere &sphere )
+Ray::Ray( PointType origin, PointType dir )
 {
-  Vector3d displacement = m_origin - sphere.getCenter();
-  Vector3d direction = m_dir;
+  _origin = origin;
 
-  double a = direction.squaredNorm();
+  // Make sure direction is normalized
+  _dir = dir.normalized();
+}
 
-  return true;
+Ray::PointType Ray::getOrigin() const
+{
+  return _origin;
+}
+
+Ray::PointType Ray::getDirection() const
+{
+  return _dir;
 }

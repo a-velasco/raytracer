@@ -1,20 +1,27 @@
 #pragma once
 
+#include <opencv2/core/core.hpp>
+#include <Eigen/Dense>
+
 #include "Sphere.h"
 #include "Light.h"
 #include "Camera.h"
-#include "Image.h"
+#include "Mesh.h"
+
+using namespace Eigen;
 
 class RayTracer
 {
 private:
-  Sphere m_sphere;
+  std::vector< Sphere > _spheres;
+  Camera 				_camera;
+  Light  				_light;
+  cv::Mat 				_image;
 
 public:
-  RayTracer( Sphere sphere ):
-            m_sphere(sphere)
-  {};
+  RayTracer( const std::vector< Sphere > &spheres, const Camera &camera, const Light &light, cv::Mat &image );
 
   void Update();
 
+  cv::Mat getRender();
 };
